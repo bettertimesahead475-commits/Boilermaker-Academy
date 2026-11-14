@@ -189,41 +189,10 @@ async function startServer() {
     res.json({ ok: true, service: 'boilermaker-academy-428a' });
   });
 
-  app.get('/api/progress', async (_req, res) => {
-    try {
-      const store = await readStore();
-      res.json(store);
-    } catch (err) {
-      console.error('Failed to read progress store:', err);
-      res.status(500).json({ error: 'Unable to load saved study progress.' });
-    }
-  });
-
-  app.put('/api/progress', async (req, res) => {
-    try {
-      const current = await readStore();
-      const updated = {
-        ...current,
-        ...req.body,
-        lastUpdatedAt: new Date().toISOString(),
-      };
-      await writeStore(updated);
-      res.json(updated);
-    } catch (err) {
-      console.error('Failed to persist progress:', err);
-      res.status(500).json({ error: 'Unable to save study progress to disk.' });
-    }
-  });
-
-  app.post('/api/progress/reset', async (_req, res) => {
-    try {
-      const fresh = { ...DEFAULT_PROGRESS, lastUpdatedAt: new Date().toISOString() };
-      await writeStore(fresh);
-      res.json(fresh);
-    } catch (err) {
-      console.error('Failed to reset progress:', err);
-      res.status(500).json({ error: 'Unable to reset progress.' });
-    }
+  // No unauthenticated shared progress API. Until account-based storage is implemented,
+  // study progress is stored locally in each student's browser.
+  app.all(['/api/progress', '/api/progress/reset'], (_req, res) => {
+    res.status(410).json({ error: 'Shared progress API retired. Use device-local study mode.' });
   });
 
   app.post('/api/ai/chat', async (req, res) => {

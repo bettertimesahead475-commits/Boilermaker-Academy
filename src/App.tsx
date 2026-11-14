@@ -44,6 +44,7 @@ import {
   UploadedDocumentRef,
   WeldingSessionRecord,
 } from './types/academy';
+import { readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
 import { generateSevenDayPlan } from './utils/scoring';
 
 const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -80,39 +81,17 @@ export default function App() {
   const [syncError, setSyncError] = useState<string | null>(null);
 
   const loadProgress = useCallback(async () => {
-    try {
-      setLoading(true);
-      setSyncError(null);
-      const res = await fetch('/api/progress');
-      if (!res.ok) throw new Error('Unable to load saved progress from server.');
-      const data = (await res.json()) as StudentProgress;
-      setProgress(data);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Storage load failed.');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    try { setProgress(readLocalProgress()); setSyncError(null); }
+    catch { setSyncError('Unable to load device-local study progress.'); }
+    finally { setLoading(false); }
   }, []);
 
-  useEffect(() => {
-    void loadProgress();
-  }, [loadProgress]);
+  useEffect(() => { void loadProgress(); }, [loadProgress]);
 
   const persistProgress = useCallback(async (updated: StudentProgress) => {
-    setProgress(updated);
-    setSyncError(null);
-    try {
-      const res = await fetch('/api/progress', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated),
-      });
-      if (!res.ok) throw new Error('Failed to save changes to persistent server storage.');
-      const saved = (await res.json()) as StudentProgress;
-      setProgress(saved);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Failed to persist study progress.');
-    }
+    try { saveLocalProgress(updated); setProgress(updated); setSyncError(null); }
+    catch { setSyncError('Device storage is full or unavailable. Changes were not saved.'); }
   }, []);
 
   // Increment real active daily study seconds every 30 seconds
@@ -129,11 +108,7 @@ export default function App() {
             [todayKey]: nextSeconds,
           },
         };
-        void fetch('/api/progress', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dailyStudySeconds: updated.dailyStudySeconds }),
-        }).catch(() => {});
+        try { saveLocalProgress(updated); } catch { /* storage may be unavailable */ }
         return updated;
       });
     }, 30000);
@@ -275,14 +250,8 @@ export default function App() {
   };
 
   const handleResetProgress = async () => {
-    try {
-      const res = await fetch('/api/progress/reset', { method: 'POST' });
-      if (!res.ok) throw new Error('Reset failed');
-      const fresh = (await res.json()) as StudentProgress;
-      setProgress(fresh);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Unable to reset progress.');
-    }
+    try { setProgress(resetLocalProgress()); setSyncError(null); }
+    catch { setSyncError('Unable to reset device-local progress.'); }
   };
 
   const activeLesson = activeLessonId ? ALL_LESSONS.find((l) => l.id === activeLessonId) ?? null : null;
@@ -308,7 +277,7 @@ export default function App() {
             <p className="font-display text-xl font-bold text-white tracking-wide leading-none">
               Boilermaker Academy
             </p>
-            <p className="text-xs font-mono text-amber-400 mt-1">Ontario 428A · Red Seal</p>
+            <p className="text-xs font-mono text-amber-400 mt-1">Canadian Boilermaker · Red Seal</p>
           </div>
           <button
             type="button"
@@ -344,7 +313,7 @@ export default function App() {
 
         <div className="p-4 border-t border-[#2A394A] text-xs text-slate-400 space-y-1">
           <p className="font-medium text-slate-200 truncate">
-            {progress ? progress.profile.currentLocal : 'Alberta Local 146 / ON 428A'}
+            {progress ? progress.profile.currentLocal : 'Boilermaker Student'}
           </p>
           <p className="font-mono text-slate-400">
             Target: {progress ? `${progress.practiceTargetPct}% study goal` : '80% study goal'}
