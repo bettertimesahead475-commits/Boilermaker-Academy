@@ -45,3 +45,10 @@ test('rejects invalid or incomplete backups', () => {
   assert.throws(() => parseProgressBackup('{"profile":{}}'));
   assert.throws(() => parseProgressBackup('{invalid'));
 });
+
+test('rejects malformed profile, study durations and note records', () => {
+  const fresh = readLocalProgress();
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, profile: { ...fresh.profile, age: -1 } })));
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, dailyStudySeconds: { today: '100' } })));
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, studyNotes: [null] })));
+});

@@ -128,9 +128,15 @@ export function parseProgressBackup(input: string): StudentProgress {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Backup must contain a progress object.');
   const p = parsed as Record<string, unknown>;
   if (!p.profile || typeof p.profile !== 'object' || Array.isArray(p.profile)) throw new Error('Backup has no student profile.');
+  const profile = p.profile as Record<string, unknown>;
+  if (typeof profile.name !== 'string' || profile.name.length > 200) throw new Error('Backup has an invalid student name.');
+  if (typeof profile.age !== 'number' || !Number.isFinite(profile.age) || profile.age < 0 || profile.age > 120) throw new Error('Backup has an invalid student age.');
   if (!Array.isArray(p.completedLessonIds) || !p.completedLessonIds.every(x => typeof x === 'string')) throw new Error('Backup has invalid completed lessons.');
   if (!Array.isArray(p.assessmentHistory) || !Array.isArray(p.studyNotes)) throw new Error('Backup is missing study history or notes.');
   if (!p.dailyStudySeconds || typeof p.dailyStudySeconds !== 'object' || Array.isArray(p.dailyStudySeconds)) throw new Error('Backup has invalid study-time records.');
+  if (!Object.values(p.dailyStudySeconds).every(x => typeof x === 'number' && Number.isFinite(x) && x >= 0)) throw new Error('Backup contains invalid study durations.');
+  if (p.completedLessonIds.length > 10000 || p.assessmentHistory.length > 10000 || p.studyNotes.length > 10000) throw new Error('Backup contains too many records.');
+  if (!p.studyNotes.every(x => x && typeof x === 'object' && typeof x.title === 'string' && typeof x.content === 'string')) throw new Error('Backup has malformed study notes.');
   if (!Array.isArray(p.weldingSessions) || !Array.isArray(p.riggingSessions)) throw new Error('Backup is missing simulator session arrays.');
   if (p.currentStudyLevel !== 1 && p.currentStudyLevel !== 2 && p.currentStudyLevel !== 3) throw new Error('Backup has an invalid study level.');
   return { ...structuredClone(DEFAULT_PROGRESS), ...p } as StudentProgress;

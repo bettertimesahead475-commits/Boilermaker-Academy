@@ -250,6 +250,7 @@ export default function App() {
   };
 
   const handleResetProgress = async () => {
+    if (!window.confirm('Permanently delete all study progress saved on this device? Export a backup first. This cannot be undone.')) return;
     try { setProgress(resetLocalProgress()); setSyncError(null); }
     catch { setSyncError('Unable to reset device-local progress.'); }
   };
