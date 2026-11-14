@@ -90,11 +90,28 @@ export default function App() {
   useEffect(() => { void loadProgress(); }, [loadProgress]);
 
   const persistProgress = useCallback(async (updated: StudentProgress) => {
-    try { saveLocalProgress(updated); setProgress(updated); setSyncError(null); }
-    catch { setSyncError('Device storage is full or unavailable. Changes were not saved.'); }
+    try {
+      saveLocalProgress(updated);
+      setProgress(updated);
+      setSyncError(null);
+    } catch {
+      setSyncError('Device storage is full or unavailable. Changes were not saved.');
+      // Ordinary study actions retain their existing error-banner behavior.
+    }
   }, []);
 
   const lastStudyActivityAt = useRef<number>(Date.now());
+
+  const importProgress = useCallback(async (updated: StudentProgress) => {
+    try {
+      saveLocalProgress(updated);
+      setProgress(updated);
+      setSyncError(null);
+    } catch {
+      setSyncError('Device storage is full or unavailable. Backup import failed.');
+      throw new Error('Device storage is full or unavailable. Backup import failed.');
+    }
+  }, []);
 
   // Credit study time only while the Academy tab is visible, focused, and recently active.
   // Date keys follow the student's local calendar, not UTC midnight.
@@ -524,7 +541,7 @@ export default function App() {
               onToggleBookmarkFormula={handleToggleBookmarkFormula}
             />
           ) : (
-            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} onImportProgress={persistProgress} />
+            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} onImportProgress={importProgress} />
           )}
         </main>
       </div>

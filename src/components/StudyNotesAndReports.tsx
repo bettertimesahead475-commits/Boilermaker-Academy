@@ -238,7 +238,7 @@ export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progre
         return;
       }
       await onImportProgress(backup);
-      setBackupMessage('Backup imported on this device.');
+      setBackupMessage('Backup imported and saved on this device.');
     } catch (error) {
       setBackupMessage(error instanceof Error ? error.message : 'Could not import backup.');
     } finally {
