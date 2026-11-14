@@ -195,6 +195,11 @@ async function startServer() {
     res.status(410).json({ error: 'Shared progress API retired. Use device-local study mode.' });
   });
 
+  // AI endpoints remain disabled until a separate, explicitly approved release.
+  app.use('/api/ai', (_req, res) => {
+    res.status(503).json({ error: 'AI features are temporarily unavailable.' });
+  });
+
   app.post('/api/ai/chat', async (req, res) => {
     try {
       const ai = getGeminiClient();
