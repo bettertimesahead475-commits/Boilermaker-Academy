@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   AlertCircle,
   Bookmark,
@@ -11,6 +11,7 @@ import { MASTER_FORMULA_SHEET } from '../data/curriculumMap';
 import { ALL_LESSONS } from '../data/examQuestions';
 import { ApprenticeshipLevel, StudentProgress, StudyNote, TopicDomain } from '../types/academy';
 import { ALL_DOMAINS, calculateStudyReadiness, classifyPerformance } from '../utils/scoring';
+import { parseProgressBackup } from '../utils/localProgress';
 
 interface StudyNotesViewProps {
   progress: StudentProgress;
@@ -57,7 +58,7 @@ export const StudyNotesView: React.FC<StudyNotesViewProps> = ({
       <div className="pb-4 border-b border-[#2A394A]">
         <h1 className="text-3xl font-bold text-white">Study Notes & Bookmarked Formulas</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Saved persistently on the server so your notes, formulas, and uploaded document summaries stay across sessions.
+          Saved on this device only. Export a backup from Progress Reports before clearing browser storage.
         </p>
       </div>
 
@@ -199,9 +200,12 @@ export const StudyNotesView: React.FC<StudyNotesViewProps> = ({
 interface ProgressReportsViewProps {
   progress: StudentProgress;
   onResetProgress: () => void;
+  onImportProgress: (data: StudentProgress) => Promise<void>;
 }
 
-export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progress, onResetProgress }) => {
+export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progress, onResetProgress, onImportProgress }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [backupMessage, setBackupMessage] = useState('');
   const readiness = calculateStudyReadiness({
     completedLessonIds: progress.completedLessonIds,
     totalLessons: ALL_LESSONS.length,
@@ -218,9 +222,28 @@ export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progre
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `boilermaker-428a-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `boilermaker-academy-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const importBackup = async (file: File | undefined) => {
+    if (!file) return;
+    setBackupMessage('');
+    try {
+      if (file.size > 5_000_000) throw new Error('Backup exceeds the 5 MB limit.');
+      const backup = parseProgressBackup(await file.text());
+      if (!window.confirm('Replace all study progress on this device with this backup? Export your current progress first.')) {
+        setBackupMessage('Import cancelled. No progress was changed.');
+        return;
+      }
+      await onImportProgress(backup);
+      setBackupMessage('Backup imported on this device.');
+    } catch (error) {
+      setBackupMessage(error instanceof Error ? error.message : 'Could not import backup.');
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -241,6 +264,10 @@ export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progre
             <Download className="w-4 h-4" />
             Export JSON
           </button>
+          <input ref={fileInputRef} type="file" accept=".json,application/json" className="hidden" aria-label="Select study progress backup" onChange={e => void importBackup(e.target.files?.[0])} />
+          <button type="button" onClick={() => fileInputRef.current?.click()} className="px-4 py-2 rounded-md bg-[#182433] border border-[#2A394A] text-xs font-medium text-white hover:border-amber-400">
+            Import Backup
+          </button>
           <button
             type="button"
             onClick={onResetProgress}
@@ -251,6 +278,8 @@ export const ProgressReportsView: React.FC<ProgressReportsViewProps> = ({ progre
         </div>
       </div>
 
+      {backupMessage && <p role="status" className="text-sm text-amber-300">{backupMessage}</p>}
+      <p className="text-xs text-slate-400">Progress is stored on this device only. Export a backup before clearing browser data or changing devices. Backup files may contain personal notes; keep them private.</p>
       {/* Warning Notice */}
       <div className="p-4 rounded-lg bg-[#111B27] border border-amber-500/40 text-xs text-slate-300 flex items-start gap-2.5">
         <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />

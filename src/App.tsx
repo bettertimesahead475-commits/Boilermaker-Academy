@@ -504,7 +504,7 @@ export default function App() {
               onToggleBookmarkFormula={handleToggleBookmarkFormula}
             />
           ) : (
-            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} />
+            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} onImportProgress={persistProgress} />
           )}
         </main>
       </div>

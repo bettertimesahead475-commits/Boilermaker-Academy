@@ -119,3 +119,19 @@ export function resetLocalProgress(): StudentProgress {
   saveLocalProgress(fresh);
   return fresh;
 }
+
+/** Validates the structure of a portable progress backup before replacing local data. */
+export function parseProgressBackup(input: string): StudentProgress {
+  if (input.length > 5_000_000) throw new Error('Backup exceeds the 5 MB limit.');
+  let parsed: unknown;
+  try { parsed = JSON.parse(input); } catch { throw new Error('Backup is not valid JSON.'); }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Backup must contain a progress object.');
+  const p = parsed as Record<string, unknown>;
+  if (!p.profile || typeof p.profile !== 'object' || Array.isArray(p.profile)) throw new Error('Backup has no student profile.');
+  if (!Array.isArray(p.completedLessonIds) || !p.completedLessonIds.every(x => typeof x === 'string')) throw new Error('Backup has invalid completed lessons.');
+  if (!Array.isArray(p.assessmentHistory) || !Array.isArray(p.studyNotes)) throw new Error('Backup is missing study history or notes.');
+  if (!p.dailyStudySeconds || typeof p.dailyStudySeconds !== 'object' || Array.isArray(p.dailyStudySeconds)) throw new Error('Backup has invalid study-time records.');
+  if (!Array.isArray(p.weldingSessions) || !Array.isArray(p.riggingSessions)) throw new Error('Backup is missing simulator session arrays.');
+  if (p.currentStudyLevel !== 1 && p.currentStudyLevel !== 2 && p.currentStudyLevel !== 3) throw new Error('Backup has an invalid study level.');
+  return { ...structuredClone(DEFAULT_PROGRESS), ...p } as StudentProgress;
+}
