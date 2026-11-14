@@ -1,0 +1,702 @@
+{
+  "profile": {
+    "name": "Apprentice Candidate (428A)",
+    "age": 41,
+    "yearsShopExperience": 5,
+    "previousLocal": "Ontario Boilermakers Local 128",
+    "currentLocal": "Alberta Local 146 (Reinstated)",
+    "weldingTickets": [
+      "SMAW Structural",
+      "FCAW Structural",
+      "Pipe Welding"
+    ],
+    "targetPath": "Ontario 428A Classroom Exemption & Red Seal Readiness"
+  },
+  "currentStudyLevel": 1,
+  "completedLessonIds": [],
+  "lessonAssessmentScores": {},
+  "diagnosticResult": {
+    "id": "exam-1794690136682",
+    "title": "50-Question Level 1 Comprehensive Diagnostic",
+    "mode": "diagnostic",
+    "timed": false,
+    "durationSeconds": 374,
+    "completedAt": "2026-11-14T21:02:16.682Z",
+    "totalCorrect": 3,
+    "totalQuestions": 50,
+    "percentage": 6,
+    "targetPct": 80,
+    "domainBreakdown": [
+      {
+        "domain": "Mathematics",
+        "correct": 3,
+        "total": 8,
+        "percentage": 38,
+        "classification": "Requires instruction",
+        "practicalCorrect": 1,
+        "practicalTotal": 3,
+        "theoreticalCorrect": 2,
+        "theoreticalTotal": 5
+      },
+      {
+        "domain": "Rigging",
+        "correct": 0,
+        "total": 8,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 5,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 3
+      },
+      {
+        "domain": "Blueprint Reading",
+        "correct": 0,
+        "total": 6,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 3,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 3
+      },
+      {
+        "domain": "Welding",
+        "correct": 0,
+        "total": 7,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 3,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 4
+      },
+      {
+        "domain": "Metallurgy",
+        "correct": 0,
+        "total": 5,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 2,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 3
+      },
+      {
+        "domain": "Fabrication",
+        "correct": 0,
+        "total": 6,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 4,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 2
+      },
+      {
+        "domain": "Industrial Equipment",
+        "correct": 0,
+        "total": 5,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 2,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 3
+      },
+      {
+        "domain": "Safety",
+        "correct": 0,
+        "total": 5,
+        "percentage": 0,
+        "classification": "Requires instruction",
+        "practicalCorrect": 0,
+        "practicalTotal": 3,
+        "theoreticalCorrect": 0,
+        "theoreticalTotal": 2
+      }
+    ],
+    "practicalPercentage": 4,
+    "theoreticalPercentage": 8,
+    "weakDomains": [
+      "Rigging",
+      "Blueprint Reading",
+      "Welding",
+      "Metallurgy",
+      "Fabrication",
+      "Industrial Equipment",
+      "Safety",
+      "Mathematics"
+    ],
+    "answers": [
+      {
+        "questionId": "diag-math-1",
+        "selectedIndex": 0,
+        "isCorrect": true
+      },
+      {
+        "questionId": "diag-math-2",
+        "selectedIndex": 0,
+        "isCorrect": true
+      },
+      {
+        "questionId": "diag-math-3",
+        "selectedIndex": 0,
+        "isCorrect": true
+      },
+      {
+        "questionId": "diag-math-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-math-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-math-6",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-math-7",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-math-8",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-6",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-7",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-rig-8",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-bp-6",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-6",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-weld-7",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-met-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-met-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-met-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-met-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-met-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-fab-6",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-eq-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-eq-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-eq-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-eq-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-eq-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-saf-1",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-saf-2",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-saf-3",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-saf-4",
+        "selectedIndex": -1,
+        "isCorrect": false
+      },
+      {
+        "questionId": "diag-saf-5",
+        "selectedIndex": -1,
+        "isCorrect": false
+      }
+    ]
+  },
+  "assessmentHistory": [],
+  "weakSubjects": [
+    "Rigging",
+    "Blueprint Reading",
+    "Welding",
+    "Metallurgy",
+    "Fabrication",
+    "Industrial Equipment",
+    "Safety",
+    "Mathematics"
+  ],
+  "studyNotes": [
+    {
+      "id": "note-initial-1",
+      "title": "Shop Math Reminder — Mean Diameter vs OD",
+      "domain": "Mathematics",
+      "level": 1,
+      "content": "Always subtract plate thickness from OD (or add to ID) before multiplying by pi when laying out rolled vessel shell blanks: Stretch-out = pi * (OD - t).",
+      "updatedAt": "2026-11-14T20:29:50.037Z"
+    }
+  ],
+  "uploadedDocs": [],
+  "studySchedule": [
+    {
+      "day": "Day 1 (Mon)",
+      "focusDomain": "Rigging",
+      "recommendedLessonId": "l1-rigging-basics",
+      "taskDescription": "Complete Rigging module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 45,
+      "completed": false
+    },
+    {
+      "day": "Day 2 (Tue)",
+      "focusDomain": "Blueprint Reading",
+      "recommendedLessonId": "l1-blueprint-basics",
+      "taskDescription": "Complete Blueprint Reading module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 45,
+      "completed": false
+    },
+    {
+      "day": "Day 3 (Wed)",
+      "focusDomain": "Welding",
+      "recommendedLessonId": "l1-welding-oxy-smaw",
+      "taskDescription": "Complete Welding module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 45,
+      "completed": false
+    },
+    {
+      "day": "Day 4 (Thu)",
+      "focusDomain": "Metallurgy",
+      "recommendedLessonId": "l2-metallurgy-distortion",
+      "taskDescription": "Complete Metallurgy module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 45,
+      "completed": false
+    },
+    {
+      "day": "Day 5 (Fri)",
+      "focusDomain": "Fabrication",
+      "recommendedLessonId": "l1-tools-layout",
+      "taskDescription": "Complete Fabrication module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 45,
+      "completed": false
+    },
+    {
+      "day": "Day 6 (Sat)",
+      "focusDomain": "Industrial Equipment",
+      "recommendedLessonId": "l1-boilers-steel-id",
+      "taskDescription": "Complete Industrial Equipment module + worked math/theory problems — Requires instruction (0% diagnostic)",
+      "targetMinutes": 60,
+      "completed": false
+    },
+    {
+      "day": "Day 7 (Sun)",
+      "focusDomain": "Safety",
+      "recommendedLessonId": "l1-safety-foundations",
+      "taskDescription": "25-question mixed review test & formula sheet consolidation (Safety)",
+      "targetMinutes": 60,
+      "completed": false
+    }
+  ],
+  "bookmarkedFormulas": [
+    "f-sling-tension",
+    "f-plate-weight",
+    "f-mean-circ",
+    "f-pythagoras"
+  ],
+  "weldingSessions": [],
+  "riggingSessions": [
+    {
+      "id": "rig-1794690535417",
+      "scenarioId": "scen-01-sym-beam",
+      "scenarioTitle": "Symmetrical Steel Beam Lift",
+      "mode": "guided",
+      "completedAt": "2026-11-14T21:08:55.417Z",
+      "passed": false,
+      "scorePct": 80,
+      "maxTensionLb": 2771,
+      "minAngleDeg": 60,
+      "peakTiltDeg": 0,
+      "failureCause": "none",
+      "criteriaBreakdown": [
+        {
+          "label": "Pre-Lift Hardware Inspection & Secured Pins",
+          "passed": true,
+          "detail": "Hardware inspected and pins secured."
+        },
+        {
+          "label": "Safe Sling Angle (>= 55°)",
+          "passed": true,
+          "detail": "Measured minimum angle: 60.0°"
+        },
+        {
+          "label": "Tension Within Effective Sling & Shackle WLL",
+          "passed": true,
+          "detail": "Max leg utilization: 35.5%"
+        },
+        {
+          "label": "Load Balance & Tilt Control (<= 4°)",
+          "passed": true,
+          "detail": "Peak tilt: 0.0°"
+        },
+        {
+          "label": "Target Zone Placement & Zero Collisions",
+          "passed": false,
+          "detail": "Load not yet landed in target bay."
+        }
+      ]
+    },
+    {
+      "id": "rig-1794690462413",
+      "scenarioId": "scen-01-sym-beam",
+      "scenarioTitle": "Symmetrical Steel Beam Lift",
+      "mode": "guided",
+      "completedAt": "2026-11-14T21:07:42.413Z",
+      "passed": false,
+      "scorePct": 80,
+      "maxTensionLb": 2771,
+      "minAngleDeg": 60,
+      "peakTiltDeg": 0,
+      "failureCause": "none",
+      "criteriaBreakdown": [
+        {
+          "label": "Pre-Lift Hardware Inspection & Secured Pins",
+          "passed": true,
+          "detail": "Hardware inspected and pins secured."
+        },
+        {
+          "label": "Safe Sling Angle (>= 55°)",
+          "passed": true,
+          "detail": "Measured minimum angle: 60.0°"
+        },
+        {
+          "label": "Tension Within Effective Sling & Shackle WLL",
+          "passed": true,
+          "detail": "Max leg utilization: 35.5%"
+        },
+        {
+          "label": "Load Balance & Tilt Control (<= 4°)",
+          "passed": true,
+          "detail": "Peak tilt: 0.0°"
+        },
+        {
+          "label": "Target Zone Placement & Zero Collisions",
+          "passed": false,
+          "detail": "Load not yet landed in target bay."
+        }
+      ]
+    },
+    {
+      "id": "rig-1794690391959",
+      "scenarioId": "scen-01-sym-beam",
+      "scenarioTitle": "Symmetrical Steel Beam Lift",
+      "mode": "guided",
+      "completedAt": "2026-11-14T21:06:31.959Z",
+      "passed": false,
+      "scorePct": 80,
+      "maxTensionLb": 2771,
+      "minAngleDeg": 60,
+      "peakTiltDeg": 0,
+      "failureCause": "none",
+      "criteriaBreakdown": [
+        {
+          "label": "Pre-Lift Hardware Inspection & Secured Pins",
+          "passed": true,
+          "detail": "Hardware inspected and pins secured."
+        },
+        {
+          "label": "Safe Sling Angle (>= 55°)",
+          "passed": true,
+          "detail": "Measured minimum angle: 60.0°"
+        },
+        {
+          "label": "Tension Within Effective Sling & Shackle WLL",
+          "passed": true,
+          "detail": "Max leg utilization: 35.5%"
+        },
+        {
+          "label": "Load Balance & Tilt Control (<= 4°)",
+          "passed": true,
+          "detail": "Peak tilt: 0.0°"
+        },
+        {
+          "label": "Target Zone Placement & Zero Collisions",
+          "passed": false,
+          "detail": "Load not yet landed in target bay."
+        }
+      ]
+    },
+    {
+      "id": "rig-1794690307751",
+      "scenarioId": "scen-01-sym-beam",
+      "scenarioTitle": "Symmetrical Steel Beam Lift",
+      "mode": "guided",
+      "completedAt": "2026-11-14T21:05:07.751Z",
+      "passed": false,
+      "scorePct": 80,
+      "maxTensionLb": 2771,
+      "minAngleDeg": 60,
+      "peakTiltDeg": 0,
+      "failureCause": "none",
+      "criteriaBreakdown": [
+        {
+          "label": "Pre-Lift Hardware Inspection & Secured Pins",
+          "passed": true,
+          "detail": "Hardware inspected and pins secured."
+        },
+        {
+          "label": "Safe Sling Angle (>= 55°)",
+          "passed": true,
+          "detail": "Measured minimum angle: 60.0°"
+        },
+        {
+          "label": "Tension Within Effective Sling & Shackle WLL",
+          "passed": true,
+          "detail": "Max leg utilization: 35.5%"
+        },
+        {
+          "label": "Load Balance & Tilt Control (<= 4°)",
+          "passed": true,
+          "detail": "Peak tilt: 0.0°"
+        },
+        {
+          "label": "Target Zone Placement & Zero Collisions",
+          "passed": false,
+          "detail": "Load not yet landed in target bay."
+        }
+      ]
+    },
+    {
+      "id": "rig-1794690160095",
+      "scenarioId": "scen-01-sym-beam",
+      "scenarioTitle": "Symmetrical Steel Beam Lift",
+      "mode": "guided",
+      "completedAt": "2026-11-14T21:02:40.095Z",
+      "passed": false,
+      "scorePct": 80,
+      "maxTensionLb": 2771,
+      "minAngleDeg": 60,
+      "peakTiltDeg": 0,
+      "failureCause": "none",
+      "criteriaBreakdown": [
+        {
+          "label": "Pre-Lift Hardware Inspection & Secured Pins",
+          "passed": true,
+          "detail": "Hardware inspected and pins secured."
+        },
+        {
+          "label": "Safe Sling Angle (>= 55°)",
+          "passed": true,
+          "detail": "Measured minimum angle: 60.0°"
+        },
+        {
+          "label": "Tension Within Effective Sling & Shackle WLL",
+          "passed": true,
+          "detail": "Max leg utilization: 35.5%"
+        },
+        {
+          "label": "Load Balance & Tilt Control (<= 4°)",
+          "passed": true,
+          "detail": "Peak tilt: 0.0°"
+        },
+        {
+          "label": "Target Zone Placement & Zero Collisions",
+          "passed": false,
+          "detail": "Load not yet landed in target bay."
+        }
+      ]
+    }
+  ],
+  "signalProgress": {
+    "knownIds": [
+      "hoist"
+    ],
+    "practiceIds": [],
+    "bookmarkedIds": [
+      "hoist",
+      "stop",
+      "emergency-stop"
+    ],
+    "srsNextDue": {
+      "hoist": "2026-11-17T21:09:00.364Z"
+    },
+    "quizAttempts": 5,
+    "quizCorrect": 5
+  },
+  "bookmarkedGlossaryIds": [
+    "e7018",
+    "dcep",
+    "undercut",
+    "heat-input",
+    "wll",
+    "sling-angle"
+  ],
+  "dailyStudySeconds": {
+    "2026-11-14": 2070
+  },
+  "practiceTargetPct": 80,
+  "lastUpdatedAt": "2026-11-14T21:09:40.147Z"
+}

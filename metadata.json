@@ -1,0 +1,6 @@
+{
+  "name": "Boilermaker Academy — Ontario 428A",
+  "description": "Ontario Construction Boilermaker (428A) apprenticeship classroom exemption and Red Seal exam preparation academy with interactive diagnostics, trade math lessons, rigging calculators, SVG diagrams, and AI trade instruction.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
