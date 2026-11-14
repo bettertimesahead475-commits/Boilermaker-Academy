@@ -24,6 +24,7 @@ export type NavSection =
   | 'level2'
   | 'level3'
   | 'exams'
+  | 'flashcards'
   | 'calculators'
   | 'rigging-sim'
   | 'crane-signals'

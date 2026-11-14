@@ -5,6 +5,7 @@ import {
   BookA,
   BookOpen,
   Bot,
+  Layers3,
   Calculator,
   ClipboardCheck,
   Compass,
@@ -17,6 +18,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import { ProvinceFlashcards } from './components/ProvinceFlashcards';
 import { AiInstructorView } from './components/AiInstructorView';
 import { CalculatorsView } from './components/CalculatorsView';
 import { CraneSignalsView } from './components/CraneSignalsView';
@@ -50,6 +52,7 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ cl
   { id: 'level2', label: 'Level 2', icon: Layers },
   { id: 'level3', label: 'Level 3', icon: Layers },
   { id: 'exams', label: 'Practice Exams', icon: ClipboardCheck },
+  { id: 'flashcards', label: 'Flashcards · 3 Provinces', icon: Layers3 },
   { id: 'calculators', label: 'Rigging Calculators', icon: Calculator },
   { id: 'rigging-sim', label: '3D Rigging Lab', icon: Anchor },
   { id: 'crane-signals', label: 'Crane Signals', icon: Hand },
@@ -57,7 +60,7 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ cl
   { id: 'welding', label: 'Welding Theory', icon: Flame },
   { id: 'blueprints', label: 'Blueprint Reading', icon: Compass },
   { id: 'glossary', label: 'Technical Glossary', icon: BookA },
-  { id: 'instructor', label: 'AI Instructor', icon: Bot },
+
   { id: 'notes', label: 'Study Notes', icon: NotebookPen },
   { id: 'reports', label: 'Progress Reports', icon: BarChart3 },
 ];
@@ -426,6 +429,8 @@ export default function App() {
               }}
               onOpenGlossary={(id) => setGlossaryDrawerEntryId(id)}
             />
+          ) : section === 'flashcards' ? (
+            <ProvinceFlashcards />
           ) : section === 'dashboard' ? (
             <StudyDashboard
               progress={progress}
