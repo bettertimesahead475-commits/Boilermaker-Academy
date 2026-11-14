@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'node:path';
-import { createViteServer } from 'vite';
+import { createServer as createViteServer } from 'vite';
 
 dotenv.config();
 
