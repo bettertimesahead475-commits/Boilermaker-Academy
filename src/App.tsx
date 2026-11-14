@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Anchor,
   BarChart3,
@@ -44,7 +44,7 @@ import {
   UploadedDocumentRef,
   WeldingSessionRecord,
 } from './types/academy';
-import { getLocalStudyDateKey, readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
+import { getLocalStudyDateKey, isStudyActivityRecent, readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
 import { generateSevenDayPlan } from './utils/scoring';
 
 const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -94,11 +94,18 @@ export default function App() {
     catch { setSyncError('Device storage is full or unavailable. Changes were not saved.'); }
   }, []);
 
-  // Credit study time only while the Academy tab is visible and focused.
+  const lastStudyActivityAt = useRef<number>(Date.now());
+
+  // Credit study time only while the Academy tab is visible, focused, and recently active.
   // Date keys follow the student's local calendar, not UTC midnight.
   useEffect(() => {
+    const recordActivity = () => { lastStudyActivityAt.current = Date.now(); };
+    window.addEventListener('pointerdown', recordActivity, { passive: true });
+    window.addEventListener('keydown', recordActivity);
+    window.addEventListener('wheel', recordActivity, { passive: true });
+    window.addEventListener('touchstart', recordActivity, { passive: true });
     const timer = window.setInterval(() => {
-      if (document.visibilityState !== 'visible' || !document.hasFocus()) return;
+      if (document.visibilityState !== 'visible' || !document.hasFocus() || !isStudyActivityRecent(lastStudyActivityAt.current, Date.now())) return;
       setProgress((prev) => {
         if (!prev) return prev;
         const todayKey = getLocalStudyDateKey(new Date());
@@ -118,7 +125,13 @@ export default function App() {
         return updated;
       });
     }, 30000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('pointerdown', recordActivity);
+      window.removeEventListener('keydown', recordActivity);
+      window.removeEventListener('wheel', recordActivity);
+      window.removeEventListener('touchstart', recordActivity);
+    };
   }, []);
 
   const navigateTo = (target: NavSection) => {

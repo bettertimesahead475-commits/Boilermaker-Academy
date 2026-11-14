@@ -149,3 +149,9 @@ export function getLocalStudyDateKey(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+/** Prevents an unattended, open browser tab from inflating study-time statistics. */
+export function isStudyActivityRecent(lastActivityMs: number, nowMs: number, idleLimitMs = 5 * 60 * 1000): boolean {
+  return Number.isFinite(lastActivityMs) && Number.isFinite(nowMs)
+    && nowMs >= lastActivityMs && nowMs - lastActivityMs <= idleLimitMs;
+}
