@@ -541,8 +541,9 @@ export const RiggingSimulatorView: React.FC<RiggingSimulatorViewProps> = ({
               type="button"
               onClick={() => {
                 setTrainingMode(m.id);
-                if (m.id === 'assessment') {
+                if (m.id === 'assessment' || m.id === 'certification-prep') {
                   setHideCalculations(true);
+                  setShowOverlays(false);
                 }
               }}
               className={`px-3 py-1.5 rounded text-xs font-medium transition-colors whitespace-nowrap ${
@@ -602,6 +603,8 @@ export const RiggingSimulatorView: React.FC<RiggingSimulatorViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowOverlays((v) => !v)}
+                  disabled={trainingMode === 'assessment' || trainingMode === 'certification-prep'}
+                  title={trainingMode === 'assessment' || trainingMode === 'certification-prep' ? 'CG overlay is unavailable in assessment modes' : 'Toggle CG training overlay'}
                   className={`px-2 py-1 rounded text-xs whitespace-nowrap ml-1 ${
                     showOverlays
                       ? 'bg-sky-500/20 border border-sky-500/60 text-sky-300'
@@ -650,7 +653,7 @@ export const RiggingSimulatorView: React.FC<RiggingSimulatorViewProps> = ({
                 targetZoneXFt={scenario.targetZoneXFt}
                 targetZoneZFt={scenario.targetZoneZFt}
                 cameraPreset={cameraPreset}
-                showOverlays={showOverlays}
+                showOverlays={showOverlays && trainingMode !== 'assessment' && trainingMode !== 'certification-prep'}
                 activePickSide={activePickSide}
                 onSelectAttachmentPoint={handleSelect3DPoint}
               />
@@ -1473,11 +1476,11 @@ export const RiggingSimulatorView: React.FC<RiggingSimulatorViewProps> = ({
                   />
                   <button
                     type="button"
-                    disabled={aiLoading}
+                    disabled={true}
                     onClick={() => void handleAskAiRiggingCoach()}
                     className="px-3 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs whitespace-nowrap"
                   >
-                    {aiLoading ? 'Analyzing...' : 'Ask AI'}
+                    {'AI Offline'}
                   </button>
                 </div>
                 {aiReply && (
