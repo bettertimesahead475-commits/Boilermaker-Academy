@@ -391,11 +391,6 @@ export default function App() {
               onToggleBookmarkFormula={handleToggleBookmarkFormula}
               onCompleteLesson={handleCompleteLesson}
               onBack={() => setActiveLessonId(null)}
-              onAskAiAboutLesson={(prompt) => {
-                setAiQueuedPrompt(prompt);
-                setActiveLessonId(null);
-                setSection('instructor');
-              }}
               onOpenGlossary={(id) => setGlossaryDrawerEntryId(id)}
             />
           ) : section === 'flashcards' ? (
