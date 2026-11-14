@@ -141,3 +141,11 @@ export function parseProgressBackup(input: string): StudentProgress {
   if (p.currentStudyLevel !== 1 && p.currentStudyLevel !== 2 && p.currentStudyLevel !== 3) throw new Error('Backup has an invalid study level.');
   return { ...structuredClone(DEFAULT_PROGRESS), ...p } as StudentProgress;
 }
+
+/** Calendar-day key in the student's own timezone, avoiding UTC date rollover. */
+export function getLocalStudyDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}

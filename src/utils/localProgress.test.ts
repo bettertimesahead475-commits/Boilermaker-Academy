@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { parseProgressBackup, readLocalProgress, resetLocalProgress, saveLocalProgress } from './localProgress';
+import { getLocalStudyDateKey, parseProgressBackup, readLocalProgress, resetLocalProgress, saveLocalProgress } from './localProgress';
 
 const records = new Map<string, string>();
 Object.defineProperty(globalThis, 'localStorage', {
@@ -51,4 +51,9 @@ test('rejects malformed profile, study durations and note records', () => {
   assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, profile: { ...fresh.profile, age: -1 } })));
   assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, dailyStudySeconds: { today: '100' } })));
   assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, studyNotes: [null] })));
+});
+
+test('local study calendar date is formatted without UTC conversion', () => {
+  const date = new Date(2026, 10, 14, 23, 59);
+  assert.equal(getLocalStudyDateKey(date), '2026-11-14');
 });

@@ -44,7 +44,7 @@ import {
   UploadedDocumentRef,
   WeldingSessionRecord,
 } from './types/academy';
-import { readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
+import { getLocalStudyDateKey, readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
 import { generateSevenDayPlan } from './utils/scoring';
 
 const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -94,21 +94,27 @@ export default function App() {
     catch { setSyncError('Device storage is full or unavailable. Changes were not saved.'); }
   }, []);
 
-  // Increment real active daily study seconds every 30 seconds
+  // Credit study time only while the Academy tab is visible and focused.
+  // Date keys follow the student's local calendar, not UTC midnight.
   useEffect(() => {
     const timer = window.setInterval(() => {
+      if (document.visibilityState !== 'visible' || !document.hasFocus()) return;
       setProgress((prev) => {
         if (!prev) return prev;
-        const todayKey = new Date().toISOString().slice(0, 10);
-        const nextSeconds = (prev.dailyStudySeconds[todayKey] ?? 0) + 30;
+        const todayKey = getLocalStudyDateKey(new Date());
         const updated: StudentProgress = {
           ...prev,
           dailyStudySeconds: {
             ...prev.dailyStudySeconds,
-            [todayKey]: nextSeconds,
+            [todayKey]: (prev.dailyStudySeconds[todayKey] ?? 0) + 30,
           },
         };
-        try { saveLocalProgress(updated); } catch { /* storage may be unavailable */ }
+        try {
+          saveLocalProgress(updated);
+          setSyncError(null);
+        } catch {
+          setSyncError('Device storage is full or unavailable. Study time was not saved.');
+        }
         return updated;
       });
     }, 30000);
