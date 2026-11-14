@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Student progress is private and must never be committed.
+data/academy-store.json
+data/*progress*.json
