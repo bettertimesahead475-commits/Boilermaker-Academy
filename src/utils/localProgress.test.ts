@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { readLocalProgress, resetLocalProgress, saveLocalProgress } from './localProgress';
+import { parseProgressBackup, readLocalProgress, resetLocalProgress, saveLocalProgress } from './localProgress';
 
 const records = new Map<string, string>();
 Object.defineProperty(globalThis, 'localStorage', {
@@ -32,4 +32,16 @@ test('invalid local data falls back to a safe initial record', () => {
   records.clear();
   records.set('boilermaker-academy-progress-device-v1', '{invalid');
   assert.equal(readLocalProgress().profile.name, 'Boilermaker Student');
+});
+
+test('accepts a valid portable backup', () => {
+  const original = readLocalProgress();
+  const imported = parseProgressBackup(JSON.stringify(original));
+  assert.equal(imported.profile.name, original.profile.name);
+});
+
+test('rejects invalid or incomplete backups', () => {
+  assert.throws(() => parseProgressBackup('[]'));
+  assert.throws(() => parseProgressBackup('{"profile":{}}'));
+  assert.throws(() => parseProgressBackup('{invalid'));
 });
