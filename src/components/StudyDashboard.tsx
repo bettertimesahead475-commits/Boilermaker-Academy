@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import heroShopImage from '../assets/images/hero_boilermaker_shop_1794687590238.jpg';
 import {
   AlertCircle,
   ArrowRight,
@@ -59,17 +60,16 @@ export const StudyDashboard: React.FC<StudyDashboardProps> = ({
         <div className="lg:col-span-7 bg-[#111B27] border border-[#2A394A] rounded-lg p-6 flex flex-col justify-between space-y-5">
           <div className="space-y-2.5">
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-amber-400">
-              <span>ONTARIO 428A STUDY WORKBENCH</span>
+              <span>CANADIAN BOILERMAKER STUDY WORKBENCH</span>
               <span aria-hidden="true">·</span>
-              <span className="text-slate-400">{progress.profile.currentLocal}</span>
-              <span aria-hidden="true">·</span>
-              <span className="text-slate-400">Former {progress.profile.previousLocal}</span>
+              <span className="text-slate-400">Ontario · Alberta · Nova Scotia</span>
+
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wide text-balance">
-              Targeted Classroom Theory & Exemption Exam Readiness
+              Trade Theory, Practical Skills & Red Seal Readiness
             </h1>
             <p className="text-sm text-slate-300 leading-relaxed max-w-2xl">
-              Tailored for {progress.profile.yearsShopExperience} years of shop fabrication, SMAW/FCAW/pipe welding, and Alberta field experience. Focuses on classroom math, rigging calculations, blueprint symbols, and Canadian code theory rather than beginner hand-holding.
+              Study trade mathematics, rigging calculations, fabrication, welding, blueprint symbols and Canadian code theory. Select your provincial pathway in Flashcards; always verify province-specific apprenticeship requirements with the relevant authority.
             </p>
           </div>
 
@@ -125,7 +125,7 @@ export const StudyDashboard: React.FC<StudyDashboardProps> = ({
         <div className="lg:col-span-5 bg-[#111B27] border border-[#2A394A] rounded-lg overflow-hidden relative min-h-[220px]">
           {!imgError ? (
             <img
-              src="/src/assets/images/hero_boilermaker_shop_1794687590238.jpg"
+              src={heroShopImage}
               alt="Industrial boilermaker shop with cylindrical pressure vessel on turning rolls and 50T overhead rigging"
               referrerPolicy="no-referrer"
               onError={() => setImgError(true)}
@@ -133,8 +133,8 @@ export const StudyDashboard: React.FC<StudyDashboardProps> = ({
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#0F1B2B] to-[#1A283A] flex flex-col items-center justify-center p-6 text-center">
-              <p className="font-mono text-xs text-amber-400">428A · CONSTRUCTION BOILERMAKER</p>
-              <p className="text-lg font-bold text-white mt-1">Ontario Exemption & Red Seal Prep</p>
+              <p className="font-mono text-xs text-amber-400">BOILERMAKER · RED SEAL</p>
+              <p className="text-lg font-bold text-white mt-1">Canadian Trade Preparation</p>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A111A]/95 via-[#0A111A]/35 to-transparent flex flex-col justify-end p-5">

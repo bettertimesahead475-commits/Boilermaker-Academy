@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Anchor,
   BarChart3,
   BookA,
   BookOpen,
   Bot,
+  Layers3,
   Calculator,
   ClipboardCheck,
   Compass,
@@ -17,6 +18,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import { ProvinceFlashcards } from './components/ProvinceFlashcards';
 import { AiInstructorView } from './components/AiInstructorView';
 import { CalculatorsView } from './components/CalculatorsView';
 import { CraneSignalsView } from './components/CraneSignalsView';
@@ -42,6 +44,7 @@ import {
   UploadedDocumentRef,
   WeldingSessionRecord,
 } from './types/academy';
+import { getLocalStudyDateKey, isStudyActivityRecent, readLocalProgress, resetLocalProgress, saveLocalProgress } from './utils/localProgress';
 import { generateSevenDayPlan } from './utils/scoring';
 
 const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -50,6 +53,7 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ cl
   { id: 'level2', label: 'Level 2', icon: Layers },
   { id: 'level3', label: 'Level 3', icon: Layers },
   { id: 'exams', label: 'Practice Exams', icon: ClipboardCheck },
+  { id: 'flashcards', label: 'Flashcards · 3 Provinces', icon: Layers3 },
   { id: 'calculators', label: 'Rigging Calculators', icon: Calculator },
   { id: 'rigging-sim', label: '3D Rigging Lab', icon: Anchor },
   { id: 'crane-signals', label: 'Crane Signals', icon: Hand },
@@ -57,7 +61,7 @@ const NAV_ITEMS: { id: NavSection; label: string; icon: React.ComponentType<{ cl
   { id: 'welding', label: 'Welding Theory', icon: Flame },
   { id: 'blueprints', label: 'Blueprint Reading', icon: Compass },
   { id: 'glossary', label: 'Technical Glossary', icon: BookA },
-  { id: 'instructor', label: 'AI Instructor', icon: Bot },
+
   { id: 'notes', label: 'Study Notes', icon: NotebookPen },
   { id: 'reports', label: 'Progress Reports', icon: BarChart3 },
 ];
@@ -77,64 +81,74 @@ export default function App() {
   const [syncError, setSyncError] = useState<string | null>(null);
 
   const loadProgress = useCallback(async () => {
-    try {
-      setLoading(true);
-      setSyncError(null);
-      const res = await fetch('/api/progress');
-      if (!res.ok) throw new Error('Unable to load saved progress from server.');
-      const data = (await res.json()) as StudentProgress;
-      setProgress(data);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Storage load failed.');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    try { setProgress(readLocalProgress()); setSyncError(null); }
+    catch { setSyncError('Unable to load device-local study progress.'); }
+    finally { setLoading(false); }
   }, []);
 
-  useEffect(() => {
-    void loadProgress();
-  }, [loadProgress]);
+  useEffect(() => { void loadProgress(); }, [loadProgress]);
 
   const persistProgress = useCallback(async (updated: StudentProgress) => {
-    setProgress(updated);
-    setSyncError(null);
     try {
-      const res = await fetch('/api/progress', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated),
-      });
-      if (!res.ok) throw new Error('Failed to save changes to persistent server storage.');
-      const saved = (await res.json()) as StudentProgress;
-      setProgress(saved);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Failed to persist study progress.');
+      saveLocalProgress(updated);
+      setProgress(updated);
+      setSyncError(null);
+    } catch {
+      setSyncError('Device storage is full or unavailable. Changes were not saved.');
+      // Ordinary study actions retain their existing error-banner behavior.
     }
   }, []);
 
-  // Increment real active daily study seconds every 30 seconds
+  const lastStudyActivityAt = useRef<number>(Date.now());
+
+  const importProgress = useCallback(async (updated: StudentProgress) => {
+    try {
+      saveLocalProgress(updated);
+      setProgress(updated);
+      setSyncError(null);
+    } catch {
+      setSyncError('Device storage is full or unavailable. Backup import failed.');
+      throw new Error('Device storage is full or unavailable. Backup import failed.');
+    }
+  }, []);
+
+  // Credit study time only while the Academy tab is visible, focused, and recently active.
+  // Date keys follow the student's local calendar, not UTC midnight.
   useEffect(() => {
+    const recordActivity = () => { lastStudyActivityAt.current = Date.now(); };
+    window.addEventListener('pointerdown', recordActivity, { passive: true });
+    window.addEventListener('keydown', recordActivity);
+    window.addEventListener('wheel', recordActivity, { passive: true });
+    window.addEventListener('touchstart', recordActivity, { passive: true });
     const timer = window.setInterval(() => {
+      if (document.visibilityState !== 'visible' || !document.hasFocus() || !isStudyActivityRecent(lastStudyActivityAt.current, Date.now())) return;
       setProgress((prev) => {
         if (!prev) return prev;
-        const todayKey = new Date().toISOString().slice(0, 10);
-        const nextSeconds = (prev.dailyStudySeconds[todayKey] ?? 0) + 30;
+        const todayKey = getLocalStudyDateKey(new Date());
         const updated: StudentProgress = {
           ...prev,
           dailyStudySeconds: {
             ...prev.dailyStudySeconds,
-            [todayKey]: nextSeconds,
+            [todayKey]: (prev.dailyStudySeconds[todayKey] ?? 0) + 30,
           },
         };
-        void fetch('/api/progress', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dailyStudySeconds: updated.dailyStudySeconds }),
-        }).catch(() => {});
+        try {
+          saveLocalProgress(updated);
+          setSyncError(null);
+        } catch {
+          setSyncError('Device storage is full or unavailable. Study time was not saved.');
+        }
         return updated;
       });
     }, 30000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('pointerdown', recordActivity);
+      window.removeEventListener('keydown', recordActivity);
+      window.removeEventListener('wheel', recordActivity);
+      window.removeEventListener('touchstart', recordActivity);
+    };
   }, []);
 
   const navigateTo = (target: NavSection) => {
@@ -272,14 +286,9 @@ export default function App() {
   };
 
   const handleResetProgress = async () => {
-    try {
-      const res = await fetch('/api/progress/reset', { method: 'POST' });
-      if (!res.ok) throw new Error('Reset failed');
-      const fresh = (await res.json()) as StudentProgress;
-      setProgress(fresh);
-    } catch (err: unknown) {
-      setSyncError(err instanceof Error ? err.message : 'Unable to reset progress.');
-    }
+    if (!window.confirm('Permanently delete all study progress saved on this device? Export a backup first. This cannot be undone.')) return;
+    try { setProgress(resetLocalProgress()); setSyncError(null); }
+    catch { setSyncError('Unable to reset device-local progress.'); }
   };
 
   const activeLesson = activeLessonId ? ALL_LESSONS.find((l) => l.id === activeLessonId) ?? null : null;
@@ -305,7 +314,7 @@ export default function App() {
             <p className="font-display text-xl font-bold text-white tracking-wide leading-none">
               Boilermaker Academy
             </p>
-            <p className="text-xs font-mono text-amber-400 mt-1">Ontario 428A · Red Seal</p>
+            <p className="text-xs font-mono text-amber-400 mt-1">Canadian Boilermaker · Red Seal</p>
           </div>
           <button
             type="button"
@@ -341,7 +350,7 @@ export default function App() {
 
         <div className="p-4 border-t border-[#2A394A] text-xs text-slate-400 space-y-1">
           <p className="font-medium text-slate-200 truncate">
-            {progress ? progress.profile.currentLocal : 'Alberta Local 146 / ON 428A'}
+            {progress ? progress.profile.currentLocal : 'Boilermaker Student'}
           </p>
           <p className="font-mono text-slate-400">
             Target: {progress ? `${progress.practiceTargetPct}% study goal` : '80% study goal'}
@@ -419,13 +428,10 @@ export default function App() {
               onToggleBookmarkFormula={handleToggleBookmarkFormula}
               onCompleteLesson={handleCompleteLesson}
               onBack={() => setActiveLessonId(null)}
-              onAskAiAboutLesson={(prompt) => {
-                setAiQueuedPrompt(prompt);
-                setActiveLessonId(null);
-                setSection('instructor');
-              }}
               onOpenGlossary={(id) => setGlossaryDrawerEntryId(id)}
             />
+          ) : section === 'flashcards' ? (
+            <ProvinceFlashcards />
           ) : section === 'dashboard' ? (
             <StudyDashboard
               progress={progress}
@@ -535,7 +541,7 @@ export default function App() {
               onToggleBookmarkFormula={handleToggleBookmarkFormula}
             />
           ) : (
-            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} />
+            <ProgressReportsView progress={progress} onResetProgress={handleResetProgress} onImportProgress={importProgress} />
           )}
         </main>
       </div>

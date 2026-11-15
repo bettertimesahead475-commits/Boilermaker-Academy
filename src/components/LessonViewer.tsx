@@ -20,7 +20,6 @@ interface LessonViewerProps {
   onToggleBookmarkFormula: (formulaId: string) => void;
   onCompleteLesson: (lessonId: string, scorePct: number) => void;
   onBack: () => void;
-  onAskAiAboutLesson: (prompt: string) => void;
   onOpenGlossary?: (entryId: string) => void;
 }
 
@@ -32,7 +31,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onToggleBookmarkFormula,
   onCompleteLesson,
   onBack,
-  onAskAiAboutLesson,
   onOpenGlossary,
 }) => {
   const [kcAnswers, setKcAnswers] = useState<Record<string, number>>({});
@@ -85,17 +83,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           <h1 className="text-3xl font-bold text-white text-balance">{lesson.title}</h1>
         </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            onAskAiAboutLesson(
-              `Walk me through "${lesson.title}" (${lesson.moduleCode}) with a practical shop/field example and quiz me on the key formula.`
-            )
-          }
-          className="px-4 py-2 rounded-md bg-[#182433] border border-[#2A394A] hover:border-amber-500/60 text-sm font-medium text-slate-100 transition-colors whitespace-nowrap"
-        >
-          Ask AI Instructor About This Lesson
-        </button>
+
       </div>
 
       {/* 1. Learning Objectives */}
