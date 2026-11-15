@@ -150,7 +150,7 @@ export function parseProgressBackup(input: string): StudentProgress {
   if (!Array.isArray(signals.knownIds) || !Array.isArray(signals.practiceIds) || !Array.isArray(signals.bookmarkedIds)
     || ![signals.knownIds, signals.practiceIds, signals.bookmarkedIds].every(a => (a as unknown[]).every(x => typeof x === 'string'))
     || !signals.srsNextDue || typeof signals.srsNextDue !== 'object' || Array.isArray(signals.srsNextDue)
-    || !Number.isInteger(signals.quizAttempts) || !Number.isInteger(signals.quizCorrect)
+    || typeof signals.quizAttempts !== 'number' || typeof signals.quizCorrect !== 'number' || !Number.isInteger(signals.quizAttempts) || !Number.isInteger(signals.quizCorrect)
     || (signals.quizAttempts as number) < 0 || (signals.quizCorrect as number) < 0
     || (signals.quizCorrect as number) > (signals.quizAttempts as number)) throw new Error('Backup has invalid crane signal statistics.');
   if (typeof p.practiceTargetPct !== 'number' || !Number.isFinite(p.practiceTargetPct) || p.practiceTargetPct < 0 || p.practiceTargetPct > 100) throw new Error('Backup has invalid practice target.');
