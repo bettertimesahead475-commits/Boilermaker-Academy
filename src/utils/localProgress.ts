@@ -137,6 +137,24 @@ export function parseProgressBackup(input: string): StudentProgress {
   if (!Object.values(p.dailyStudySeconds).every(x => typeof x === 'number' && Number.isFinite(x) && x >= 0)) throw new Error('Backup contains invalid study durations.');
   if (p.completedLessonIds.length > 10000 || p.assessmentHistory.length > 10000 || p.studyNotes.length > 10000) throw new Error('Backup contains too many records.');
   if (!p.studyNotes.every(x => x && typeof x === 'object' && typeof x.title === 'string' && typeof x.content === 'string')) throw new Error('Backup has malformed study notes.');
+  if (typeof profile.yearsShopExperience !== 'number' || !Number.isFinite(profile.yearsShopExperience) || profile.yearsShopExperience < 0 || profile.yearsShopExperience > 100) throw new Error('Backup has invalid shop experience.');
+  if (typeof profile.previousLocal !== 'string' || typeof profile.currentLocal !== 'string' || typeof profile.targetPath !== 'string') throw new Error('Backup has invalid profile fields.');
+  if (!Array.isArray(profile.weldingTickets) || !profile.weldingTickets.every(x => typeof x === 'string')) throw new Error('Backup has invalid welding tickets.');
+  if (!p.lessonAssessmentScores || typeof p.lessonAssessmentScores !== 'object' || Array.isArray(p.lessonAssessmentScores) || !Object.values(p.lessonAssessmentScores).every(x => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= 100)) throw new Error('Backup has invalid lesson scores.');
+  for (const field of ['weakSubjects', 'bookmarkedFormulas', 'bookmarkedGlossaryIds'] as const) {
+    if (!Array.isArray(p[field]) || !(p[field] as unknown[]).every(x => typeof x === 'string')) throw new Error(`Backup has invalid ${field}.`);
+  }
+  if (!Array.isArray(p.uploadedDocs) || !Array.isArray(p.studySchedule)) throw new Error('Backup has invalid documents or study schedule.');
+  if (!p.signalProgress || typeof p.signalProgress !== 'object' || Array.isArray(p.signalProgress)) throw new Error('Backup has invalid crane signal progress.');
+  const signals = p.signalProgress as Record<string, unknown>;
+  if (!Array.isArray(signals.knownIds) || !Array.isArray(signals.practiceIds) || !Array.isArray(signals.bookmarkedIds)
+    || ![signals.knownIds, signals.practiceIds, signals.bookmarkedIds].every(a => (a as unknown[]).every(x => typeof x === 'string'))
+    || !signals.srsNextDue || typeof signals.srsNextDue !== 'object' || Array.isArray(signals.srsNextDue)
+    || !Number.isInteger(signals.quizAttempts) || !Number.isInteger(signals.quizCorrect)
+    || (signals.quizAttempts as number) < 0 || (signals.quizCorrect as number) < 0
+    || (signals.quizCorrect as number) > (signals.quizAttempts as number)) throw new Error('Backup has invalid crane signal statistics.');
+  if (typeof p.practiceTargetPct !== 'number' || !Number.isFinite(p.practiceTargetPct) || p.practiceTargetPct < 0 || p.practiceTargetPct > 100) throw new Error('Backup has invalid practice target.');
+  if (typeof p.lastUpdatedAt !== 'string') throw new Error('Backup has invalid update timestamp.');
   if (!Array.isArray(p.weldingSessions) || !Array.isArray(p.riggingSessions)) throw new Error('Backup is missing simulator session arrays.');
   if (p.currentStudyLevel !== 1 && p.currentStudyLevel !== 2 && p.currentStudyLevel !== 3) throw new Error('Backup has an invalid study level.');
   return { ...structuredClone(DEFAULT_PROGRESS), ...p } as StudentProgress;

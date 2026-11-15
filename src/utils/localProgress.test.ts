@@ -64,3 +64,11 @@ test('study time pauses after five minutes without interaction', () => {
   assert.equal(isStudyActivityRecent(1000, 1000 + 5 * 60_000 + 1), false);
   assert.equal(isStudyActivityRecent(1000, 999), false);
 });
+
+test('rejects invalid nested scores and signal progress rather than importing broken state', () => {
+  const fresh = readLocalProgress();
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, lessonAssessmentScores: { test: 'excellent' } })));
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, signalProgress: { ...fresh.signalProgress, knownIds: null } })));
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, practiceTargetPct: 150 })));
+  assert.throws(() => parseProgressBackup(JSON.stringify({ ...fresh, profile: { ...fresh.profile, weldingTickets: 'SMAW' } })));
+});
