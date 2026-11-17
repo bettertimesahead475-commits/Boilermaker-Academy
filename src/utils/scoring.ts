@@ -187,7 +187,10 @@ export function calculateStudyReadiness(params: {
   domainProficiency: Record<TopicDomain, number>;
 } {
   const { completedLessonIds, totalLessons, diagnosticResult, assessmentHistory } = params;
-  const overallCoveragePct = totalLessons > 0 ? Math.round((completedLessonIds.length / totalLessons) * 100) : 0;
+  const uniqueCompleted = new Set(completedLessonIds).size;
+  const overallCoveragePct = totalLessons > 0
+    ? Math.min(100, Math.round((uniqueCompleted / totalLessons) * 100))
+    : 0;
 
   const domainScores: Record<TopicDomain, number[]> = {
     Mathematics: [],
@@ -229,8 +232,11 @@ export function calculateStudyReadiness(params: {
   }
 
   const avgAssessment = count > 0 ? sum / count : 0;
-  const estimatedReadinessPct =
-    count > 0 ? Math.round(avgAssessment * 0.7 + overallCoveragePct * 0.3) : Math.round(overallCoveragePct * 0.3);
+  // Course completion alone cannot establish exam readiness without assessment evidence.
+  // Keep this estimate conservative and never present it as an official pass prediction.
+  const estimatedReadinessPct = count > 0
+    ? Math.min(100, Math.max(0, Math.round(avgAssessment * 0.7 + overallCoveragePct * 0.3)))
+    : 0;
 
   return {
     overallCoveragePct,
